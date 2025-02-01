@@ -1,10 +1,8 @@
 namespace TextRPG;
 
-public class HealthPotion : IItem
+public class HealthPotion : Item
 {
-    public string Name { get; set; }
-    
-    public void Use(Warrior warrior)
+    public override void Use(Warrior warrior)
     {
         throw new NotImplementedException();
     }

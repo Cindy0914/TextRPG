@@ -1,14 +1,21 @@
 namespace TextRPG;
 
-public class Warrior : ICharacter
+public class Warrior : Character
 {
-    public string Name { get; set; }
-    public int Health { get; set; }
-    public int Attack { get; set; }
-    public bool IsDead { get; set; }
+    public int Gold { get; private set; }
     
-    public void TakeDamage(int damage)
+    public Warrior(string name) : base(name)
+    {
+        Level = 1;
+        Health = 100;
+        Attack = 10;
+        Defense = 5;
+        Gold = 100;
+    }
+
+    public override void TakeDamage(int damage)
     {
         throw new NotImplementedException();
+        
     }
 }

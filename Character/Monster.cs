@@ -1,13 +1,13 @@
 namespace TextRPG;
 
-public class Monster : ICharacter
+public class Monster : Character
 {
-    public string Name { get; set; }
-    public int Health { get; set; }
-    public int Attack { get; set; }
-    public bool IsDead { get; set; }
-    
-    public void TakeDamage(int damage)
+    public Monster(string name) : base(name)
+    {
+        // TODO: Set monster stats
+    }
+
+    public override void TakeDamage(int damage)
     {
         throw new NotImplementedException();
     }
