@@ -1,5 +1,6 @@
 using System.Text;
 using TextRPG.Manager;
+using TextRPG.Utils;
 
 namespace TextRPG.Stage;
 
@@ -27,7 +28,7 @@ public class Title
     public void Run()
     {
         Console.Write(titleSb.ToString());
-        int input = Utils.GetUserInput(menuCount);
+        int input = Util.GetUserInput(menuCount);
     }
 }
 

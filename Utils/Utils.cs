@@ -1,6 +1,6 @@
-namespace TextRPG.Manager;
+namespace TextRPG.Utils;
 
-public static class Utils
+public static class Util
 {
     private const string wrongInputMessage = "[ERROR] 잘못된 입력입니다. 다시 입력해주세요.";
     private const string blankSpace = "                                              ";

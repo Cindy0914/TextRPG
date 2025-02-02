@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using TextRPG.Manager;
 using TextRPG.Stage;
+using TextRPG.Utils;
 
 namespace TextRPG;
 
@@ -13,7 +14,9 @@ public class Program
     {
         Warrior warrior = SetCharacter();
         gameManager = new GameManager(warrior);
-        title.Run();
+        
+        gameManager.Init();
+        // sdtitle.Run();
     }
 
     private static Warrior SetCharacter()
@@ -27,7 +30,7 @@ public class Program
         string? playerName = Console.ReadLine();
         while (string.IsNullOrEmpty(playerName))
         {
-            Utils.PrintColorMessage(ConsoleColor.Red, "[ERROR] 입력된 이름이 없어요! 다시 입력해주세요.");
+            Util.PrintColorMessage(ConsoleColor.Red, "[ERROR] 입력된 이름이 없어요! 다시 입력해주세요.");
             Thread.Sleep(1000);
             
             Console.Clear();
