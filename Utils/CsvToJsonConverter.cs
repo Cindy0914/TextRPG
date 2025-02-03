@@ -1,5 +1,7 @@
 using System.Globalization;
+using System.Text;
 using CsvHelper;
+using CsvHelper.Configuration;
 using Newtonsoft.Json;
 
 namespace TextRPG.Utils;
@@ -8,7 +10,7 @@ public static class CsvToJsonConverter
 {
     private const string folderPath = "Data/CSV";
     private const string outputFolderPath = "Data/JSON";
-    
+ 
     public static void ConvertCsvToJson(string csvPath, string jsonOutputPath)
     {
         if (!File.Exists(csvPath))
@@ -16,8 +18,8 @@ public static class CsvToJsonConverter
             Console.WriteLine($"CSV 파일을 찾을 수 없습니다. : {csvPath}");
             return;
         }
-        
-        using (var reader = new StreamReader(csvPath))
+
+        using (var reader = new StreamReader(csvPath, Encoding.UTF8))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             var records = csv.GetRecords<dynamic>(); // CSV 데이터를 동적 객체로 변환

@@ -1,0 +1,100 @@
+using CsvHelper.Configuration.Attributes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace TextRPG.Data;
+
+public class EquipmentDatas : IData<Equipment>
+{
+    public Dictionary<int, Equipment>? datas { get; } = new();
+    
+    public void LoadData(string folderPath)
+    {
+        string className = GetType().Name;
+        string jsonFilePath = Path.Combine(folderPath, $"{className}.json");
+        List<Equipment>? equipments = null;
+
+        if (!File.Exists(jsonFilePath))
+        {
+            Console.WriteLine($"JSON 파일을 찾을 수 없습니다. : {jsonFilePath}");
+            return;
+        }
+
+        string json = File.ReadAllText(jsonFilePath);
+        equipments = JsonConvert.DeserializeObject<List<Equipment>>(json);
+
+        if (equipments == null)
+        {
+            Console.WriteLine("데이터 로드 실패");
+            return;
+        }
+
+        foreach (var equipment in equipments)
+        {
+            datas.Add(equipment.Id, equipment);
+        }
+        Console.WriteLine($"{className} 데이터 로드 완료! 데이터 개수 : {datas.Count}");
+    }
+}
+
+public class Equipment
+{
+    public EquipmentSlot Slot;
+    public StatType Stat;
+    public string Name = string.Empty;
+    public string Desc = string.Empty;
+    public int Id = -1;
+    public int Value = 0;
+    public int Price = 0;
+
+    public bool IsEquipped = false;
+    public int SellPrice => Price / 2;
+    
+    public void Equip(CharacterStats enhancedStats)
+    {
+        IsEquipped = true;
+
+        switch (Stat)
+        {
+            case StatType.MaxHp:
+                enhancedStats.MaxHp += Value;
+                break;
+            case StatType.Attack:
+                enhancedStats.Attack += Value;
+                break;
+            case StatType.Defense:
+                enhancedStats.Defense += Value;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+    
+    public void UnEquip(CharacterStats enhancedStats)
+    {
+        IsEquipped = false;
+
+        switch (Stat)
+        {
+            case StatType.MaxHp:
+                enhancedStats.MaxHp -= Value;
+                break;
+            case StatType.Attack:
+                enhancedStats.Attack -= Value;
+                break;
+            case StatType.Defense:
+                enhancedStats.Defense -= Value;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+}
+
+public enum EquipmentSlot
+{
+    Weapon,
+    Head,
+    Armor,
+    Acc,
+}

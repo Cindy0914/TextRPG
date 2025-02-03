@@ -2,8 +2,6 @@ using Newtonsoft.Json;
 
 namespace TextRPG.Data;
 
-// TODO
-// MonsterDatas, ItemDatas, QuestDatas 클래스가 인터페이스를 상속받도록 수정
 public class MonsterDatas : IData<MonsterData>
 {
     public Dictionary<int, MonsterData>? datas { get; } = new();

@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography;
+using System.Text;
+using TextRPG.Data;
 using TextRPG.Manager;
 using TextRPG.Stage;
 using TextRPG.Utils;
@@ -7,8 +9,6 @@ namespace TextRPG;
 
 public class Program
 {
-    private static readonly Title title = new();
-    
     private static void Main(string[] args)
     {
         // Warrior warrior = SetCharacter();
@@ -16,9 +16,13 @@ public class Program
         // test
         Warrior warrior = new Warrior("테스트용사", new CharacterStats(100, 10, 5));
         GameManager.Init(warrior);
+        var item1 = DataManager.EquipmentDatas.datas[2003];
+        var item2 = DataManager.EquipmentDatas.datas[2002];
+        GameManager.Inventory.GetEquipment(item1);
+        GameManager.Inventory.GetEquipment(item2);
         
         Thread.Sleep(500);
-        title.Run();
+        Title.Run();
     }
 
     private static Warrior SetCharacter()
