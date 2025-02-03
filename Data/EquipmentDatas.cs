@@ -6,7 +6,7 @@ namespace TextRPG.Data;
 
 public class EquipmentDatas : IData<Equipment>
 {
-    public Dictionary<int, Equipment>? datas { get; } = new();
+    public Dictionary<int, Equipment>? Dict { get; } = new();
     
     public void LoadData(string folderPath)
     {
@@ -31,9 +31,9 @@ public class EquipmentDatas : IData<Equipment>
 
         foreach (var equipment in equipments)
         {
-            datas.Add(equipment.Id, equipment);
+            Dict.Add(equipment.Id, equipment);
         }
-        Console.WriteLine($"{className} 데이터 로드 완료! 데이터 개수 : {datas.Count}");
+        Console.WriteLine($"{className} 데이터 로드 완료! 데이터 개수 : {Dict.Count}");
     }
 }
 

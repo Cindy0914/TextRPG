@@ -4,7 +4,7 @@ namespace TextRPG.Data;
 
 public class MonsterDatas : IData<MonsterData>
 {
-    public Dictionary<int, MonsterData>? datas { get; } = new();
+    public Dictionary<int, MonsterData>? Dict { get; } = new();
 
     public void LoadData(string folderPath)
     {
@@ -29,9 +29,9 @@ public class MonsterDatas : IData<MonsterData>
 
         foreach (var monster in monsters)
         {
-            datas.Add(monster.Id, monster);
+            Dict.Add(monster.Id, monster);
         }
-        Console.WriteLine($"{className} 데이터 로드 완료! 데이터 개수 : {datas.Count}");
+        Console.WriteLine($"{className} 데이터 로드 완료! 데이터 개수 : {Dict.Count}");
     }
 }
 

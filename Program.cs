@@ -16,10 +16,9 @@ public class Program
         // test
         Warrior warrior = new Warrior("테스트용사", new CharacterStats(100, 10, 5));
         GameManager.Init(warrior);
-        var item1 = DataManager.EquipmentDatas.datas[2003];
-        var item2 = DataManager.EquipmentDatas.datas[2002];
-        GameManager.Inventory.GetEquipment(item1);
-        GameManager.Inventory.GetEquipment(item2);
+
+        var item1 = DataManager.ConsumeItemDatas.Dict[3000];
+        GameManager.Inventory.GetConsumeItem(item1);
         
         Thread.Sleep(500);
         Title.Run();

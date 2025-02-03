@@ -1,3 +1,4 @@
+using System.Text;
 using TextRPG.Data;
 
 namespace TextRPG;
@@ -11,15 +12,43 @@ public class Warrior : Character
     public Warrior(string name, CharacterStats stats) : base(name, stats)
     {
         Level = 1;
-        Gold = 100;
+        Gold = 1500;
         Stats = stats;
         EnhancedStats = new CharacterStats(0, 0, 0);
+
+        Stats.CurrentHp -= 50;
+    }
+
+    public StringBuilder ShowStats()
+    {
+        StringBuilder sb = new();
+        sb.AppendLine($" {Name} (전사)");
+        sb.AppendLine($" Lv.{Level}");
+        
+        sb.Append($" HP : {Stats.CurrentHp} / {Stats.MaxHp}");
+        if (EnhancedStats.MaxHp > 0) sb.Append($" (+{EnhancedStats.MaxHp})");
+        sb.AppendLine();
+        
+        sb.Append($" Atk : {Stats.Attack}");
+        if (EnhancedStats.Attack > 0) sb.Append($" (+{EnhancedStats.Attack})");
+        sb.AppendLine();
+        
+        sb.Append($" Dfs : {Stats.Defense}");
+        if (EnhancedStats.Defense > 0) sb.Append($" (+{EnhancedStats.Defense})");
+        sb.AppendLine();
+        
+        sb.AppendLine($" Gold : {Gold} G\n");
+        
+        return sb;
     }
     
     public void EquipItem(Equipment equipment)
     {
         if (equipment.IsEquipped)
+        {
+            equipment.UnEquip(EnhancedStats);
             return;
+        }
         
         if (Equipments.TryGetValue(equipment.Slot, out var equippedItem))
             equippedItem.UnEquip(EnhancedStats);

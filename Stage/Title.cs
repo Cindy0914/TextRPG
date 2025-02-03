@@ -51,38 +51,24 @@ public static class Title
                 throw new ArgumentOutOfRangeException(nameof(action), action, null);
         }
     }
+
+    public static void ShowStatus()
+    {
+        
+    }
     
     private static void Status()
     {
         Console.Clear();
         
         Warrior Player = GameManager.Player!;
-        const string message = ("[System] 현재 상태를 확인합니다.");
+        const string message = ("[System] 현재 상태를 확인합니다.\n");
         Util.PrintColorMessage(Util.system, message);
         
         StringBuilder statusSb = new();
-        statusSb.AppendLine();
-        statusSb.AppendLine("  == 상태 ==");
-        statusSb.AppendLine();
-        statusSb.AppendLine($" {Player.Name} (전사)");
-        statusSb.AppendLine($" Lv.{Player.Level}");
-        
-        statusSb.Append($" HP : {Player.Stats.CurrentHp} / {Player.Stats.MaxHp}");
-        if (Player.EnhancedStats.MaxHp > 0) statusSb.Append($" (+{Player.EnhancedStats.MaxHp})");
-        statusSb.AppendLine();
-        
-        statusSb.Append($" Atk : {Player.Stats.Attack}");
-        if (Player.EnhancedStats.Attack > 0) statusSb.Append($" (+{Player.EnhancedStats.Attack})");
-        statusSb.AppendLine();
-        
-        statusSb.Append($" Dfs : {Player.Stats.Defense}");
-        if (Player.EnhancedStats.Defense > 0) statusSb.Append($" (+{Player.EnhancedStats.Defense})");
-        statusSb.AppendLine();
-        
-        statusSb.AppendLine($" Gold : {Player.Gold} G");
-        statusSb.AppendLine();
-        statusSb.AppendLine("1. 뒤로가기");
-        statusSb.AppendLine();
+        statusSb.AppendLine("  == 상태 ==\n");
+        statusSb.Append(Player.ShowStats());
+        statusSb.AppendLine("\n1. 뒤로가기\n");
         statusSb.AppendLine("어떤 행동을 하시겠습니까?");
         
         Console.Write(statusSb.ToString());
