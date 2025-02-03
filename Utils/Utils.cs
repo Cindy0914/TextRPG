@@ -6,6 +6,10 @@ public static class Util
     private const string blankSpace = "                                              ";
     private const string newInput = ">> ";
 
+    public const ConsoleColor error = ConsoleColor.Red;
+    public const ConsoleColor success = ConsoleColor.Green;
+    public const ConsoleColor system = ConsoleColor.Cyan;
+    
     // 사용자의 입력을 받아오는 메서드
     public static int GetUserInput(int max)
     {
@@ -40,23 +44,32 @@ public static class Util
 
         void WrongInput()
         {
-            PrintColorMessage(ConsoleColor.Red, wrongInputMessage);
+            PrintColorMessage(error, wrongInputMessage, false, true);
             Thread.Sleep(1000);
             
             int top = Console.CursorTop;
             Console.SetCursorPosition(0, top);
-            Console.Write(blankSpace);
-            Console.SetCursorPosition(0,top - 1);
             Console.Write(newInput);
             Console.Write(blankSpace);
-            Console.SetCursorPosition(newInput.Length, top - 1);
+            Console.SetCursorPosition(newInput.Length, top);
         }
     }
 
-    public static void PrintColorMessage(ConsoleColor color, string message)
+    public static void PrintColorMessage(ConsoleColor color, string message, bool isLineBreak = true, bool isInputError = false)
     {
+        if (isInputError)
+        {
+            int top = Console.CursorTop;
+            Console.SetCursorPosition(newInput.Length, top - 1);
+        }
+        
         Console.ForegroundColor = color;
         Console.Write(message);
+
+        if (isLineBreak)
+        {
+            Console.WriteLine();
+        }
 
         Console.ResetColor();
     }

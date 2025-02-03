@@ -2,10 +2,11 @@ using Newtonsoft.Json;
 
 namespace TextRPG.Data;
 
-public class MonsterDatas
+// TODO
+// MonsterDatas, ItemDatas, QuestDatas 클래스가 인터페이스를 상속받도록 수정
+public class MonsterDatas : IData<MonsterData>
 {
-    private readonly Dictionary<int, MonsterData>? _monsters = new();
-    public IReadOnlyDictionary<int, MonsterData>? Monsters => _monsters;
+    public Dictionary<int, MonsterData>? datas { get; } = new();
 
     public void LoadData(string folderPath)
     {
@@ -30,9 +31,9 @@ public class MonsterDatas
 
         foreach (var monster in monsters)
         {
-            _monsters.Add(monster.Id, monster);
+            datas.Add(monster.Id, monster);
         }
-        Console.WriteLine($"{className} 데이터 로드 완료! 데이터 개수 : {_monsters.Count}");
+        Console.WriteLine($"{className} 데이터 로드 완료! 데이터 개수 : {datas.Count}");
     }
 }
 

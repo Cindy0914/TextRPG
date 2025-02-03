@@ -1,6 +1,6 @@
 namespace TextRPG;
 
-public abstract class Item
+public abstract class ConsumeItem
 {
     public string Name { get; set; }
 

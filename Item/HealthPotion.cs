@@ -1,6 +1,6 @@
 namespace TextRPG;
 
-public class HealthPotion : Item
+public class HealthPotion : ConsumeItem
 {
     public override void Use(Warrior warrior)
     {

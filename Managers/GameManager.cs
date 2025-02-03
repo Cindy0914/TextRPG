@@ -4,20 +4,15 @@ using TextRPG.Utils;
 
 namespace TextRPG.Manager;
 
-public class GameManager(Warrior warrior)
+public static class GameManager
 {
-    public Warrior? Player { get; private set; } = warrior;
+    public static Warrior? Player { get; private set; }
 
-    public void Init()
+    public static void Init(Warrior player)
     {
         CsvToJsonConverter.ConvertAllCsvInFolder();
         DataManager.Init();
-
-        if (DataManager.MonsterDatas.Monsters != null)
-        {
-            string test = DataManager.MonsterDatas.Monsters[0].Name;
-            Console.Write(test);
-        }
+        Player = player;
     }
 }
 
