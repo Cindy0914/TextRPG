@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
-using TextRPG.Data;
 
-namespace TextRPG;
+namespace TextRPG.Data;
 
 public class ConsumeItemDatas : IData<ConsumeItem>
 {

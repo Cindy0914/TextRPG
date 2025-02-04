@@ -11,15 +11,15 @@ public class Program
 {
     private static void Main(string[] args)
     {
-        // Warrior warrior = SetCharacter();
+        GameManager.OnGameInit += CsvToJsonConverter.ConvertAllCsvInFolder;
+        GameManager.OnGameInit += DataManager.Init;
+        GameManager.OnGameInit += Title.Init;
+        GameManager.OnGameInit += Shop.Init;
         
-        // test
+        // Warrior warrior = SetCharacter();
         Warrior warrior = new Warrior("테스트용사", new CharacterStats(100, 10, 5));
         GameManager.Init(warrior);
 
-        var item1 = DataManager.ConsumeItemDatas.Dict[3000];
-        GameManager.Inventory.GetConsumeItem(item1);
-        
         Thread.Sleep(500);
         Title.Run();
     }

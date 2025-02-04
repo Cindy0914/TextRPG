@@ -7,6 +7,7 @@ public class Warrior : Character
 {
     public int Gold { get; private set; }
     public CharacterStats EnhancedStats { get; }
+    public StringBuilder statusSb { get; } = new();
     public Dictionary<EquipmentSlot, Equipment> Equipments { get; } = new();
 
     public Warrior(string name, CharacterStats stats) : base(name, stats)
@@ -15,31 +16,29 @@ public class Warrior : Character
         Gold = 1500;
         Stats = stats;
         EnhancedStats = new CharacterStats(0, 0, 0);
-
-        Stats.CurrentHp -= 50;
     }
 
     public StringBuilder ShowStats()
     {
-        StringBuilder sb = new();
-        sb.AppendLine($" {Name} (전사)");
-        sb.AppendLine($" Lv.{Level}");
+        statusSb.Clear();
+        statusSb.AppendLine($" {Name} (전사)");
+        statusSb.AppendLine($" Lv.{Level}");
         
-        sb.Append($" HP : {Stats.CurrentHp} / {Stats.MaxHp}");
-        if (EnhancedStats.MaxHp > 0) sb.Append($" (+{EnhancedStats.MaxHp})");
-        sb.AppendLine();
+        statusSb.Append($" HP : {Stats.CurrentHp} / {Stats.MaxHp}");
+        if (EnhancedStats.MaxHp > 0) statusSb.Append($" (+{EnhancedStats.MaxHp})");
+        statusSb.AppendLine();
         
-        sb.Append($" Atk : {Stats.Attack}");
-        if (EnhancedStats.Attack > 0) sb.Append($" (+{EnhancedStats.Attack})");
-        sb.AppendLine();
+        statusSb.Append($" Atk : {Stats.Attack}");
+        if (EnhancedStats.Attack > 0) statusSb.Append($" (+{EnhancedStats.Attack})");
+        statusSb.AppendLine();
         
-        sb.Append($" Dfs : {Stats.Defense}");
-        if (EnhancedStats.Defense > 0) sb.Append($" (+{EnhancedStats.Defense})");
-        sb.AppendLine();
+        statusSb.Append($" Dfs : {Stats.Defense}");
+        if (EnhancedStats.Defense > 0) statusSb.Append($" (+{EnhancedStats.Defense})");
+        statusSb.AppendLine();
         
-        sb.AppendLine($" Gold : {Gold} G\n");
+        statusSb.AppendLine($" Gold : {Gold} G\n");
         
-        return sb;
+        return statusSb;
     }
     
     public void EquipItem(Equipment equipment)
@@ -57,7 +56,17 @@ public class Warrior : Character
         equipment.Equip(EnhancedStats);
     }
     
-    public override void TakeDamage(int damage)
+    public void AddGold(int gold)
+    {
+        Gold += gold;
+    }
+    
+    public void RemoveGold(int gold)
+    {
+        Gold -= gold;
+    }
+    
+    public void TakeDamage(int damage)
     {
         throw new NotImplementedException();
     }

@@ -6,9 +6,4 @@ public class Monster : Character
     {
         // TODO: Set monster stats
     }
-
-    public override void TakeDamage(int damage)
-    {
-        throw new NotImplementedException();
-    }
 }

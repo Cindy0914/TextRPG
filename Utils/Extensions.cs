@@ -20,7 +20,7 @@ public static class Extensions
     {
         return statType switch
         {
-            StatType.MaxHp   => "체력",
+            StatType.MaxHp   => "최대체력",
             StatType.Attack  => "공격력",
             StatType.Defense => "방어력",
             _                => string.Empty

@@ -2,7 +2,7 @@ namespace TextRPG;
 
 public abstract class Character
 {
-    public string Name { get; protected set; }
+    public string Name { get; }
     public int Level { get; protected set; }
     public bool IsDead { get; protected set; }
     public CharacterStats Stats { get; protected set; }
@@ -12,8 +12,6 @@ public abstract class Character
         Name = name;
         Stats = stats;
     }
-    
-    public abstract void TakeDamage(int damage);
 }
 
 public class CharacterStats

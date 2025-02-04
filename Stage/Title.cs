@@ -41,7 +41,7 @@ public static class Title
                 break;
             case TitleActionEnum.Inventory: Inventory();
                 break;
-            case TitleActionEnum.Shop: Shop();
+            case TitleActionEnum.Shop: EnterShop();
                 break;
             case TitleActionEnum.Dungeon: Dungeon();
                 break;
@@ -51,24 +51,23 @@ public static class Title
                 throw new ArgumentOutOfRangeException(nameof(action), action, null);
         }
     }
-
-    public static void ShowStatus()
-    {
-        
-    }
     
     private static void Status()
     {
         Console.Clear();
         
         Warrior Player = GameManager.Player!;
-        const string message = ("[System] 현재 상태를 확인합니다.\n");
+        const string message = ("[System] 현재 상태를 확인합니다.");
         Util.PrintColorMessage(Util.system, message);
         
         StringBuilder statusSb = new();
-        statusSb.AppendLine("  == 상태 ==\n");
+        statusSb.AppendLine();
+        statusSb.AppendLine("  == 상태 ==");
+        statusSb.AppendLine();
         statusSb.Append(Player.ShowStats());
-        statusSb.AppendLine("\n1. 뒤로가기\n");
+        statusSb.AppendLine();
+        statusSb.AppendLine("1. 뒤로가기");
+        statusSb.AppendLine();
         statusSb.AppendLine("어떤 행동을 하시겠습니까?");
         
         Console.Write(statusSb.ToString());
@@ -82,9 +81,9 @@ public static class Title
         GameManager.Inventory.ShowInventory();
     }
     
-    private static void Shop()
+    private static void EnterShop()
     {
-        
+        Shop.Run();
     }
     
     private static void Dungeon()

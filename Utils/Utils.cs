@@ -41,18 +41,50 @@ public static class Util
         }
 
         return inputNumber;
+    }
 
-        void WrongInput()
+    public static int GetUserInput(int max, bool existZero)
+    {
+        Console.Write(newInput);
+
+        int inputNumber;
+        while (true)
         {
-            PrintColorMessage(error, wrongInputMessage, false, true);
-            Thread.Sleep(1000);
-            
-            int top = Console.CursorTop;
-            Console.SetCursorPosition(0, top);
-            Console.Write(newInput);
-            Console.Write(blankSpace);
-            Console.SetCursorPosition(newInput.Length, top);
+            string? input = Console.ReadLine();
+            if (int.TryParse(input, out inputNumber))
+            {
+                if (inputNumber >= 0 && inputNumber <= max)
+                {
+                    break;
+                }
+                else
+                {
+                    WrongInput();
+                }
+            }
+            else if (input == null)
+            {
+                WrongInput();
+            }
+            else
+            {
+                WrongInput();
+            }
         }
+
+        return inputNumber;
+    }
+    
+    private static void WrongInput()
+    {
+        PrintColorMessage(error, wrongInputMessage, false, true);
+        Thread.Sleep(1000);
+            
+        int top = Console.CursorTop;
+        Console.SetCursorPosition(0, top);
+        Console.Write(newInput);
+        Console.Write(blankSpace);
+        Console.SetCursorPosition(newInput.Length, top);
     }
 
     public static void PrintColorMessage(ConsoleColor color, string message, bool isLineBreak = true, bool isInputError = false)
