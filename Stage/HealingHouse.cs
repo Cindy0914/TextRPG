@@ -49,14 +49,21 @@ public class HealingHouse : Singleton<HealingHouse>
     {
         Warrior player = GameManager.Instance.Player!;
         string message;
+        const int price = 500;
         if (player.CurrentHp == player.Stats.MaxHp)
         {
             message = "[System] 이미 체력이 가득 찼습니다.";
             Util.PrintColorMessage(Util.error, message, false);
         }
+        else if(player.Gold < price)
+        {
+            message = "[System] 골드가 부족합니다.";
+            Util.PrintColorMessage(Util.error, message, false);
+        }
         else
         {
             player.CurrentHp = player.Stats.MaxHp;
+            player.Gold -= price;
             message = "[System] 체력을 모두 회복했습니다.";
             Util.PrintColorMessage(Util.success, message);
         }
