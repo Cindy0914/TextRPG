@@ -50,18 +50,18 @@ public class ConsumeItem
         return Desc.Replace("Value", Value.ToString());
     }
 
-    public void Use(CharacterStats stats)
+    public void Use(Warrior player)
     {
         switch (Stat)
         {
             case StatType.MaxHp:
-                stats.CurrentHp += Value;
+                player.CurrentHp += Value;
                 break;
             case StatType.Attack:
-                stats.Attack += Value;
+                player.EnhancedStats.Attack += Value;
                 break;
             case StatType.Defense:
-                stats.Defense += Value;
+                player.EnhancedStats.Defense += Value;
                 break;
         }
     }

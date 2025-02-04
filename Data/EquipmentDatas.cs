@@ -1,6 +1,8 @@
 using CsvHelper.Configuration.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using TextRPG.Manager;
+using TextRPG.Utils;
 
 namespace TextRPG.Data;
 

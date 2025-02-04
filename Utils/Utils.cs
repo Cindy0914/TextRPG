@@ -10,40 +10,7 @@ public static class Util
     public const ConsoleColor success = ConsoleColor.Green;
     public const ConsoleColor system = ConsoleColor.Cyan;
     
-    // 사용자의 입력을 받아오는 메서드
     public static int GetUserInput(int max)
-    {
-        Console.Write(newInput);
-
-        int inputNumber;
-        while (true)
-        {
-            string? input = Console.ReadLine();
-            if (int.TryParse(input, out inputNumber))
-            {
-                if (inputNumber > 0 && inputNumber <= max)
-                {
-                    break;
-                }
-                else
-                {
-                    WrongInput();
-                }
-            }
-            else if (input == null) // 사용자가 입력을 하지 않고 엔터를 눌렀을 때
-            {
-                WrongInput();
-            }
-            else // 사용자가 숫자가 아닌 다른 문자를 입력했을 때
-            {
-                WrongInput();
-            }
-        }
-
-        return inputNumber;
-    }
-
-    public static int GetUserInput(int max, bool existZero)
     {
         Console.Write(newInput);
 

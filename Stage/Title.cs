@@ -4,104 +4,107 @@ using TextRPG.Utils;
 
 namespace TextRPG.Stage;
 
-public static class Title
+public class Title : Singleton<Title>
 {
-    private static readonly StringBuilder titleSb = new();
-    private const int menuCount = 5;
-
-    public static void Init()
+    private StringBuilder titleSb = new();
+    
+    public override void Init()
     {
-        titleSb.AppendLine("스파르타 마을에 오신 여러분 환영합니다!");
-        titleSb.AppendLine("던전에 들어가기 전 준비를 하고, 던전에서 몬스터를 사냥하며 경험치를 얻어 레벨업을 할 수 있습니다.");
-
+        titleSb.AppendLine("Text RPG");
         titleSb.AppendLine();
-        titleSb.AppendLine("1. 상태 보기");
-        titleSb.AppendLine("2. 인벤토리");
-        titleSb.AppendLine("3. 상점");
-        titleSb.AppendLine("4. 던전 입장");
-        titleSb.AppendLine("5. 휴식하기");
-
-        titleSb.AppendLine();
-        titleSb.AppendLine("어떤 행동을 하시겠습니까?");
+        titleSb.AppendLine("1. 새 게임");
+        titleSb.AppendLine("2. 이어하기");
+        titleSb.AppendLine("0. 게임 종료");
     }
-
-    public static void Run()
+    
+    public void Run()
     {
         Console.Clear();
         Console.Write(titleSb.ToString());
-        int input = Util.GetUserInput(menuCount);
-        TitleAction((TitleActionEnum)input);
+        int input = Util.GetUserInput(2);
+        TitleAction(input);
     }
-
-    private static void TitleAction(TitleActionEnum action)
+    
+    private void TitleAction(int input)
     {
-        switch (action)
+        switch (input)
         {
-            case TitleActionEnum.Status: Status();
+            case 0: Exit();
                 break;
-            case TitleActionEnum.Inventory: Inventory();
+            case 1: NewGame();
                 break;
-            case TitleActionEnum.Shop: EnterShop();
-                break;
-            case TitleActionEnum.Dungeon: Dungeon();
-                break;
-            case TitleActionEnum.Rest: Rest();
+            case 2: Continue();
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(action), action, null);
+                throw new ArgumentOutOfRangeException(nameof(input), input, null);
         }
     }
     
-    private static void Status()
+    private void NewGame()
+    {
+        // Warrior warrior = new Warrior("테스트용사", new CharacterStats(100, 10, 5));
+        Warrior player = SetCharacter();
+        GameManager.Instance.SetPlayer(player);
+        GameManager.Instance.Init();
+        
+        Thread.Sleep(200);
+        Town.Instance.Run();
+    }
+    
+    private void Continue()
+    {
+        var loadData = DataManager.Instance.LoadData();
+        if (loadData == null)
+        {
+            string message = "[ERROR] 저장된 데이터가 없습니다.";
+            Util.PrintColorMessage(Util.error, message, false, true);
+            Thread.Sleep(1000);
+            
+            Run();
+        }
+        else
+        {
+            loadData!.Load();
+            GameManager.Instance.Init();
+            Town.Instance.Run();
+        }
+    }
+    
+    private void Exit()
+    {
+        Environment.Exit(0);
+    }
+    
+    private Warrior SetCharacter()
     {
         Console.Clear();
         
-        Warrior Player = GameManager.Player!;
-        const string message = ("[System] 현재 상태를 확인합니다.");
-        Util.PrintColorMessage(Util.system, message);
-        
-        StringBuilder statusSb = new();
-        statusSb.AppendLine();
-        statusSb.AppendLine("  == 상태 ==");
-        statusSb.AppendLine();
-        statusSb.Append(Player.ShowStats());
-        statusSb.AppendLine();
-        statusSb.AppendLine("1. 뒤로가기");
-        statusSb.AppendLine();
-        statusSb.AppendLine("어떤 행동을 하시겠습니까?");
-        
-        Console.Write(statusSb.ToString());
-        
-        Util.GetUserInput(1);
-        Run();
-    }
-    
-    private static void Inventory()
-    {
-        GameManager.Inventory.ShowInventory();
-    }
-    
-    private static void EnterShop()
-    {
-        Shop.Run();
-    }
-    
-    private static void Dungeon()
-    {
-        
-    }
-    
-    private static void Rest()
-    {
-        
-    }
-}
+        StringBuilder sb = new();
+        sb.AppendLine("TextRPG 게임에 어서오세요!");
+        sb.AppendLine("용사님, 당신의 이름을 입력해주세요.");
+        sb.Append(">> ");
+        Console.Write(sb.ToString());
 
-public enum TitleActionEnum
-{
-    Status = 1,
-    Inventory,
-    Shop,
-    Dungeon,
-    Rest
+        string? playerName = Console.ReadLine();
+        while (string.IsNullOrEmpty(playerName))
+        {
+            string wrongInputMessage = "[ERROR] 잘못된 입력입니다. 다시 입력해주세요.";
+            Util.PrintColorMessage(Util.error, wrongInputMessage, true);
+            Thread.Sleep(1000);
+            
+            Console.Clear();
+            Console.Write(sb.ToString());
+            playerName = Console.ReadLine();
+        }
+
+        CharacterStats stats = new(100, 10, 5);
+        Warrior warrior = new(playerName, stats);
+        
+        Console.WriteLine($"\n용사님의 이름은 {playerName}이시군요!");
+        Console.WriteLine("마을로 이동할게요.");
+        Thread.Sleep(1000);
+        Console.Clear();
+
+        return warrior;
+    }
 }

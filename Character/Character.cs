@@ -1,3 +1,5 @@
+using TextRPG.Manager;
+
 namespace TextRPG;
 
 public abstract class Character
@@ -20,28 +22,9 @@ public class CharacterStats
     public int Attack { get; set; } = 0;
     public int Defense { get; set; } = 0;
 
-    private int _currentHp = 0;
-    public int CurrentHp
-    {
-        get => _currentHp;
-        set
-        {
-            _currentHp = value;
-            if (_currentHp <= 0)
-            {
-                _currentHp = 0;
-            }
-            if (_currentHp > MaxHp)
-            {
-                _currentHp = MaxHp;
-            }
-        }
-    }
-
     public CharacterStats(int maxHp, int attack, int defense)
     {
         MaxHp = maxHp;
-        CurrentHp = maxHp;
         Attack = attack;
         Defense = defense;
     }

@@ -1,14 +1,61 @@
 using System.Text;
 using TextRPG.Data;
+using TextRPG.Manager;
 
 namespace TextRPG;
 
 public class Warrior : Character
 {
-    public int Gold { get; private set; }
     public CharacterStats EnhancedStats { get; }
     public StringBuilder statusSb { get; } = new();
     public Dictionary<EquipmentSlot, Equipment> Equipments { get; } = new();
+
+    private int _currentHp = 0;
+    public int CurrentHp
+    {
+        get => _currentHp;
+        set
+        {
+            _currentHp = value;
+            if (_currentHp <= 0)
+            {
+                _currentHp = 0;
+            }
+            if (_currentHp > Stats.MaxHp + EnhancedStats.MaxHp)
+            {
+                _currentHp = Stats.MaxHp + EnhancedStats.MaxHp;
+            }
+        }
+    }
+    
+    private int _gold;
+    public int Gold
+    {
+        get => _gold;
+        set
+        {
+            _gold = value;
+            if (_gold < 0)
+            {
+                _gold = 0;
+            }
+        }
+    }
+
+    private int _exp;
+    public int Exp
+    {
+        get => _exp;
+        set
+        {
+            _exp = value;
+            var levelData = GameManager.Instance.LevelData;
+            if (levelData.IsMaxExp(Level, _exp))
+            {
+                LevelUp(false);
+            }
+        }
+    }
 
     public Warrior(string name, CharacterStats stats) : base(name, stats)
     {
@@ -16,6 +63,7 @@ public class Warrior : Character
         Gold = 1500;
         Stats = stats;
         EnhancedStats = new CharacterStats(0, 0, 0);
+        CurrentHp = stats.MaxHp;
     }
 
     public StringBuilder ShowStats()
@@ -24,7 +72,7 @@ public class Warrior : Character
         statusSb.AppendLine($" {Name} (전사)");
         statusSb.AppendLine($" Lv.{Level}");
         
-        statusSb.Append($" HP : {Stats.CurrentHp} / {Stats.MaxHp}");
+        statusSb.Append($" HP : {CurrentHp} / {Stats.MaxHp}");
         if (EnhancedStats.MaxHp > 0) statusSb.Append($" (+{EnhancedStats.MaxHp})");
         statusSb.AppendLine();
         
@@ -36,7 +84,7 @@ public class Warrior : Character
         if (EnhancedStats.Defense > 0) statusSb.Append($" (+{EnhancedStats.Defense})");
         statusSb.AppendLine();
         
-        statusSb.AppendLine($" Gold : {Gold} G\n");
+        statusSb.AppendLine($" Gold : {Gold} G");
         
         return statusSb;
     }
@@ -46,28 +94,53 @@ public class Warrior : Character
         if (equipment.IsEquipped)
         {
             equipment.UnEquip(EnhancedStats);
+            UpEquipItem(equipment);
             return;
         }
-        
+
         if (Equipments.TryGetValue(equipment.Slot, out var equippedItem))
+        {
             equippedItem.UnEquip(EnhancedStats);
+            UpEquipItem(equipment);
+        }
         
         Equipments[equipment.Slot] = equipment;
         equipment.Equip(EnhancedStats);
     }
     
-    public void AddGold(int gold)
+    public CharacterStats GetTotalStats()
     {
-        Gold += gold;
+        return new CharacterStats(Stats.MaxHp + EnhancedStats.MaxHp, Stats.Attack + EnhancedStats.Attack, Stats.Defense + EnhancedStats.Defense);
     }
-    
-    public void RemoveGold(int gold)
+
+    public void UpEquipItem(Equipment equipment)
     {
-        Gold -= gold;
+        Equipments.Remove(equipment.Slot);
     }
     
     public void TakeDamage(int damage)
     {
-        throw new NotImplementedException();
+        CurrentHp -= damage;
+        
+        if (CurrentHp <= 0)
+        {
+            IsDead = true;
+        }
+    }
+
+    public void LevelUp(bool isLoad)
+    {
+        var levelData = GameManager.Instance.LevelData;
+        levelData.LevelUp(Stats);
+        Level++;
+        
+        if (!isLoad)
+            Exp = 0;
+    }
+
+    public void Revive()
+    {
+        IsDead = false;
+        CurrentHp = 10;
     }
 }

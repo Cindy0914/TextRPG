@@ -5,14 +5,14 @@ using TextRPG.Utils;
 
 namespace TextRPG.Stage;
 
-public static class Shop
+public class Shop : Singleton<Shop>
 {
-    private static readonly Dictionary<int, bool> purchased = new();
-    private static readonly List<Equipment> equipments = new();
-    private static readonly StringBuilder shopSb = new();
-    private static readonly StringBuilder itemSb = new();
+    public Dictionary<int, bool> Purchased { get; set; } = new();
+    private readonly List<Equipment> equipments = new();
+    private readonly StringBuilder shopSb = new();
+    private readonly StringBuilder itemSb = new();
 
-    public static void Init()
+    public override void Init()
     {
         shopSb.AppendLine();
         shopSb.AppendLine(" == 상점 ==");
@@ -23,15 +23,15 @@ public static class Shop
         shopSb.AppendLine();
         shopSb.AppendLine("어떤 행동을 하시겠습니까?");
         
-        var buyEquipments = DataManager.GetBuyEquipments();
+        var buyEquipments = DataManager.Instance.GetBuyEquipments();
         equipments.AddRange(buyEquipments);
         foreach (var equip in buyEquipments)
         {
-            purchased.Add(equip.Id, false);
+            Purchased.Add(equip.Id, false);
         }
     }
 
-    public static void Run()
+    public void Run()
     {
         const string message = "[System] 아이템을 구입하거나 판매합니다.";
      
@@ -39,15 +39,15 @@ public static class Shop
         Util.PrintColorMessage(Util.system, message);
         Console.Write(shopSb.ToString());
         
-        int input = Util.GetUserInput(3, true);
+        int input = Util.GetUserInput(3);
         ShopAction(input);
     }
     
-    private static void ShopAction(int input)
+    private void ShopAction(int input)
     {
         switch (input)
         {
-            case 0: Title.Run();
+            case 0: Town.Instance.Run();
                 break;
             case 1: BuyEquipments();
                 break;
@@ -58,7 +58,7 @@ public static class Shop
         }
     }
 
-    private static void BuyEquipments()
+    private void BuyEquipments()
     {
         string message = "[System] 아이템을 구입합니다.";
 
@@ -77,7 +77,7 @@ public static class Shop
             for (int i = 0; i < equipments.Count; i++)
             {
                 var equip = equipments[i];
-                bool isPurchase = purchased[equip.Id];
+                bool isPurchase = Purchased[equip.Id];
                 PrintIsPurchased(i, isPurchase, equip);
             }
 
@@ -86,7 +86,7 @@ public static class Shop
             itemSb.AppendLine();
             itemSb.AppendLine("어떤 아이템을 구매하시겠습니까?");
             Console.Write(itemSb.ToString());
-            int input = Util.GetUserInput(equipments.Count, true);
+            int input = Util.GetUserInput(equipments.Count);
             
             if (input == 0)
             {
@@ -121,7 +121,7 @@ public static class Shop
         }
     }
 
-    private static void SellEquipments()
+    private void SellEquipments()
     {
         // 인벤토리 아이템 목록 표시
         string message = "[System] 아이템을 판매합니다.";
@@ -137,7 +137,7 @@ public static class Shop
             itemSb.AppendLine(" == 상점_판매 가능 목록 ==");
             itemSb.AppendLine();
 
-            var playerEquipments = GameManager.Inventory.GetPlayerEquipments();
+            var playerEquipments = GameManager.Instance.Inventory.GetPlayerEquipments();
             for (int i = 0; i < playerEquipments.Count; i++)
             {
                 var equip = playerEquipments[i];
@@ -149,7 +149,7 @@ public static class Shop
             itemSb.AppendLine();
             itemSb.AppendLine("어떤 아이템을 판매하시겠습니까?");
             Console.Write(itemSb.ToString());
-            int input = Util.GetUserInput(playerEquipments.Count, true);
+            int input = Util.GetUserInput(playerEquipments.Count);
             
             if (input == 0)
             {
@@ -162,20 +162,20 @@ public static class Shop
         }
     }
 
-    private static void PrintPlayerGold()
+    private void PrintPlayerGold()
     {
-        var gold = GameManager.GetGold();
+        var gold = GameManager.Instance.Player!.Gold;
         string message = $"[System] 현재 소지금 : {gold} Gold\n";
         Util.PrintColorMessage(Util.system, message);
     }
 
-    private static void PurchaseEquip(Equipment equip)
+    private void PurchaseEquip(Equipment equip)
     {
-        if (GameManager.TryPurchaseItem(equip.Price))
+        if (GameManager.Instance.TryPurchaseItem(equip.Price))
         {
-            purchased.Remove(equip.Id);
-            purchased.Add(equip.Id, true);
-            GameManager.Inventory.AddEquipment(equip);
+            Purchased.Remove(equip.Id);
+            Purchased.Add(equip.Id, true);
+            GameManager.Instance.Inventory.AddEquipment(equip);
         }
         else
         {
@@ -183,17 +183,18 @@ public static class Shop
         }
     }
     
-    private static void SellEquip(Equipment equip)
+    private void SellEquip(Equipment equip)
     {
-        GameManager.SellItem(equip.SellPrice);
-        GameManager.Inventory.RemoveEquipment(equip);
+        GameManager.Instance.SellItem(equip.SellPrice);
+        GameManager.Instance.Inventory.RemoveEquipment(equip);
         
         if (equip.IsEquipped)
         {
-            equip.UnEquip(GameManager.Player!.Stats);
+            equip.UnEquip(GameManager.Instance.Player!.Stats);
+            GameManager.Instance.Player!.UpEquipItem(equip);
         }
         
-        purchased.Remove(equip.Id);
-        purchased.Add(equip.Id, false);
+        Purchased.Remove(equip.Id);
+        Purchased.Add(equip.Id, false);
     }
 }

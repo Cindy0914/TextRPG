@@ -1,45 +1,44 @@
+using TextRPG.Data;
 using TextRPG.Utils;
 using TextRPG.Item;
 
 namespace TextRPG.Manager;
 
-public static class GameManager
+public class GameManager : Singleton<GameManager>
 {
-    public static event Action? OnGameInit;
+    public event Action? OnGameInit;
     
-    public static Warrior? Player { get; private set; }
-    public static Inventory Inventory { get; } = new();
+    public Warrior? Player { get; private set; }
+    public Inventory Inventory { get; } = new();
+    public LevelData LevelData { get; } = new();
     
-    public static void Init(Warrior player)
+    public override void Init()
     {
-        Player = player;
         Inventory.Init();
-        
         OnGameInit?.Invoke();
     }
     
-    public static bool TryPurchaseItem(int price)
+    public void SetPlayer(Warrior player)
     {
-        int gold = GetGold();
-        if (gold < price)
+        Player = player;
+    }
+    
+    public bool TryPurchaseItem(int price)
+    {
+        if (Player!.Gold < price)
         {
             string message = "[System] 골드가 부족합니다.";
-            Util.PrintColorMessage(Util.system, message);
+            Util.PrintColorMessage(Util.error, message, false, true);
             return false;
         }
 
-        Player.RemoveGold(price);
+        Player!.Gold -= price;
         return true;
     }
 
-    public static void SellItem(int price)
+    public void SellItem(int price)
     {
-        Player.AddGold(price);;
-    }
-    
-    public static int GetGold()
-    {
-        return Player!.Gold;
+        Player!.Gold += price;
     }
 }
 
