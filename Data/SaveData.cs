@@ -14,9 +14,9 @@ public class SaveData
     public int CurrentHp { get; }
 
     // DataManager가 데이터들을 가지고 있기 때문에 Id만 저장
-    public int[]? Equipped { get; set; }
-    public int[]? Equipments { get; set; }
-    public int[]? Items { get; set; }
+    public int[]? Equipped { get; private set; }
+    public int[]? Equipments { get; private set; }
+    public int[]? Items { get; private set; }
 
     public SaveData(string name, int level, int exp, int gold, int currentHp)
     {
