@@ -68,7 +68,7 @@ public class DataManager : Singleton<DataManager>
                 return consumeItem = ConsumeItemDatas.Dict![3001];
             case DungeonLevel.Hard:
                 count = 1;
-                return consumeItem = ConsumeItemDatas.Dict![3002];
+                return consumeItem = ConsumeItemDatas.Dict![3001];
             default:
                 throw new ArgumentOutOfRangeException(nameof(level), level, null);
         }
