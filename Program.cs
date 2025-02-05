@@ -10,7 +10,6 @@ public class Program
     {
         // 필요한 Manager들과 Stage들을 초기화
         GameManager.Instance.OnGameInit += CsvToJsonConverter.ConvertAllCsvInFolder;
-        GameManager.Instance.OnGameInit += DataManager.Instance.Init;
         GameManager.Instance.OnGameInit += SaveStage.Instance.Init;
         GameManager.Instance.OnGameInit += Town.Instance.Init;
         GameManager.Instance.OnGameInit += Shop.Instance.Init;
@@ -18,6 +17,7 @@ public class Program
         GameManager.Instance.OnGameInit += HealingHouse.Instance.Init;
         
         // Title 화면에서 시작
+        DataManager.Instance.Init();
         Title.Instance.Init();
         Title.Instance.Run();
     }
@@ -26,7 +26,6 @@ public class Program
     public static void Exit()
     {
         GameManager.Instance.OnGameInit -= CsvToJsonConverter.ConvertAllCsvInFolder;
-        GameManager.Instance.OnGameInit -= DataManager.Instance.Init;
         GameManager.Instance.OnGameInit -= SaveStage.Instance.Init;
         GameManager.Instance.OnGameInit -= Town.Instance.Init;
         GameManager.Instance.OnGameInit -= Shop.Instance.Init;

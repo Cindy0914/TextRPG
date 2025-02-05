@@ -8,15 +8,15 @@ public class SaveData
 {
     public string Name { get; }
     public int Level { get; }
-    
-    private int Exp;
-    private int Gold;
-    private int CurrentHp;
-    
+
+    public int Exp { get; }
+    public int Gold { get; }
+    public int CurrentHp { get; }
+
     // DataManager가 데이터들을 가지고 있기 때문에 Id만 저장
-    private int[]? Equipped;
-    private int[]? Equipments;
-    private int[]? Items;
+    public int[]? Equipped { get; set; }
+    public int[]? Equipments { get; set; }
+    public int[]? Items { get; set; }
 
     public SaveData(string name, int level, int exp, int gold, int currentHp)
     {

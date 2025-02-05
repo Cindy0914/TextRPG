@@ -128,9 +128,9 @@ public class SaveStage : Singleton<SaveStage>
             return false;
         }
 
-        GameManager.Instance.Init();
         var data = DataManager.Instance.LoadData(input - 1);
         data!.Load();
+        GameManager.Instance.Init();
         Town.Instance.Run();
         return true;
     }
