@@ -12,12 +12,10 @@ public class LevelData
         return exp >= expTable[level];
     }
     
-    public CharacterStats LevelUp(CharacterStats baseStats)
+    public void LevelUp(CharacterStats baseStats)
     {
         baseStats.MaxHp += 10;
         baseStats.Attack += 1;
         baseStats.Defense += 1;
-
-        return baseStats;
     }
 }

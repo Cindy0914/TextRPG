@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Text;
 using CsvHelper;
-using CsvHelper.Configuration;
 using Newtonsoft.Json;
 
 namespace TextRPG.Utils;
@@ -11,7 +10,7 @@ public static class CsvToJsonConverter
     private const string folderPath = "Data/CSV";
     private const string outputFolderPath = "Data/JSON";
  
-    public static void ConvertCsvToJson(string csvPath, string jsonOutputPath)
+    private static void ConvertCsvToJson(string csvPath, string jsonOutputPath)
     {
         if (!File.Exists(csvPath))
         {

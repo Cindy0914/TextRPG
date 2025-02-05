@@ -5,15 +5,15 @@ namespace TextRPG.Data;
 
 public class SaveData
 {
-    public string Name;
-    public int Level;
-    public int Exp;
-    public int Gold;
-    public int CurrentHp;
-
-    public int[]? Equipped;
-    public int[]? Equipments;
-    public int[]? Items;
+    public string Name { get; }
+    public int Level { get; }
+    
+    private int Exp;
+    private int Gold;
+    private int CurrentHp;
+    private int[]? Equipped;
+    private int[]? Equipments;
+    private int[]? Items;
 
     public SaveData(string name, int level, int exp, int gold, int currentHp)
     {
@@ -84,7 +84,7 @@ public class SaveData
 
     private void SaveEquipped()
     {
-        var equips = GameManager.Instance.Player.Equipments;
+        var equips = GameManager.Instance.Player!.Equipments;
         if (equips.Count == 0)
         {
             return;
@@ -108,6 +108,7 @@ public class SaveData
         {
             var equipment = DataManager.Instance.EquipmentDatas.Dict![Equipments[i]];
             GameManager.Instance.Inventory.AddEquipment(equipment);
+            Shop.Instance.Purchased.Remove(equipment.Id);
             Shop.Instance.Purchased.Add(equipment.Id, true);
         }
     }

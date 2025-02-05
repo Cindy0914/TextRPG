@@ -1,6 +1,7 @@
 using System.Text;
 using TextRPG.Data;
 using TextRPG.Manager;
+using TextRPG.Utils;
 
 namespace TextRPG;
 
@@ -20,6 +21,7 @@ public class Warrior : Character
             if (_currentHp <= 0)
             {
                 _currentHp = 0;
+                IsDead = true;
             }
             if (_currentHp > Stats.MaxHp + EnhancedStats.MaxHp)
             {
@@ -69,7 +71,7 @@ public class Warrior : Character
     public StringBuilder ShowStats()
     {
         statusSb.Clear();
-        statusSb.AppendLine($" {Name} (전사)");
+        statusSb.Append($" {Name} (전사)");
         statusSb.AppendLine($" Lv.{Level}");
         
         statusSb.Append($" HP : {CurrentHp} / {Stats.MaxHp}");
@@ -84,6 +86,7 @@ public class Warrior : Character
         if (EnhancedStats.Defense > 0) statusSb.Append($" (+{EnhancedStats.Defense})");
         statusSb.AppendLine();
         
+        statusSb.AppendLine($" Exp : {Exp}");
         statusSb.AppendLine($" Gold : {Gold} G");
         
         return statusSb;
@@ -121,11 +124,6 @@ public class Warrior : Character
     public void TakeDamage(int damage)
     {
         CurrentHp -= damage;
-        
-        if (CurrentHp <= 0)
-        {
-            IsDead = true;
-        }
     }
 
     public void LevelUp(bool isLoad)
@@ -133,14 +131,17 @@ public class Warrior : Character
         var levelData = GameManager.Instance.LevelData;
         levelData.LevelUp(Stats);
         Level++;
+
+        if (isLoad) return;
         
-        if (!isLoad)
-            Exp = 0;
+        Exp = 0;
+        string message = $"[System] 레벨이 올라 Lv.{Level} 가 되었습니다!";
+        Util.PrintColorMessage(Util.success, message);
     }
 
     public void Revive()
     {
         IsDead = false;
-        CurrentHp = 10;
+        CurrentHp = 5;
     }
 }

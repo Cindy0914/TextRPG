@@ -6,17 +6,17 @@ namespace TextRPG.Stage;
 
 public class HealingHouse : Singleton<HealingHouse>
 {
-    private readonly StringBuilder helingSb = new();
+    private StringBuilder healingSb = new();
 
     public override void Init()
     {
-        helingSb.AppendLine();
-        helingSb.AppendLine(" == 치료소 ==");
-        helingSb.AppendLine();
-        helingSb.AppendLine("1. 치료하기");
-        helingSb.AppendLine("0. 나가기");
-        helingSb.AppendLine();
-        helingSb.AppendLine("어떤 행동을 하시겠습니까?");
+        healingSb.AppendLine();
+        healingSb.AppendLine(" == 치료소 ==");
+        healingSb.AppendLine();
+        healingSb.AppendLine("1. 치료하기");
+        healingSb.AppendLine("0. 나가기");
+        healingSb.AppendLine();
+        healingSb.AppendLine("어떤 행동을 하시겠습니까?");
     }
 
     public void Run()
@@ -27,7 +27,7 @@ public class HealingHouse : Singleton<HealingHouse>
                 
         Util.PrintColorMessage(Util.system, message);
 
-        Console.Write(helingSb.ToString());
+        Console.Write(healingSb.ToString());
         int input = Util.GetUserInput(1);
         HealingHouseAction(input);
     }
@@ -53,12 +53,12 @@ public class HealingHouse : Singleton<HealingHouse>
         if (player.CurrentHp == player.Stats.MaxHp)
         {
             message = "[System] 이미 체력이 가득 찼습니다.";
-            Util.PrintColorMessage(Util.error, message, false);
+            Util.PrintColorMessage(Util.error, message, false, true);
         }
         else if(player.Gold < price)
         {
             message = "[System] 골드가 부족합니다.";
-            Util.PrintColorMessage(Util.error, message, false);
+            Util.PrintColorMessage(Util.error, message, false, true);
         }
         else
         {

@@ -14,6 +14,8 @@ public class Town : Singleton<Town>
         townSb.AppendLine("던전에 들어가기 전 준비를 하고, 던전에서 몬스터를 사냥하며 경험치를 얻어 레벨업을 할 수 있습니다.");
 
         townSb.AppendLine();
+        townSb.AppendLine(" == 마을 ==");
+        townSb.AppendLine();
         townSb.AppendLine("1. 상태 보기");
         townSb.AppendLine("2. 인벤토리");
         townSb.AppendLine("3. 상점");
@@ -105,11 +107,7 @@ public class Town : Singleton<Town>
     
     private void Save()
     {
-        DataManager.Instance.SaveData();
-        string message = "[System] 게임을 저장했습니다!";
-        Util.PrintColorMessage(Util.success, message, false, true);
-        Thread.Sleep(1000);
-        Run();
+        SaveStage.Instance.Run();
     }
     
     private void Exit()

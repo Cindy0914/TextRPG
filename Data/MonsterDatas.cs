@@ -37,9 +37,9 @@ public class MonsterDatas : IData<MonsterData>
 
 public class MonsterData
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public int Level { get; set; }
-    public int Attack { get; set; }
-    public int Defense { get; set; }
+    public int Id;
+    public string Name;
+    public int Level;
+    public int Attack;
+    public int Defense;
 }

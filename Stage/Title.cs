@@ -15,6 +15,8 @@ public class Title : Singleton<Title>
         titleSb.AppendLine("1. 새 게임");
         titleSb.AppendLine("2. 이어하기");
         titleSb.AppendLine("0. 게임 종료");
+        titleSb.AppendLine();
+        titleSb.AppendLine("어떤 행동을 하시겠습니까?");
     }
     
     public void Run()
@@ -42,7 +44,6 @@ public class Title : Singleton<Title>
     
     private void NewGame()
     {
-        // Warrior warrior = new Warrior("테스트용사", new CharacterStats(100, 10, 5));
         Warrior player = SetCharacter();
         GameManager.Instance.SetPlayer(player);
         GameManager.Instance.Init();
@@ -53,21 +54,14 @@ public class Title : Singleton<Title>
     
     private void Continue()
     {
-        var loadData = DataManager.Instance.LoadData();
-        if (loadData == null)
-        {
-            string message = "[ERROR] 저장된 데이터가 없습니다.";
-            Util.PrintColorMessage(Util.error, message, false, true);
-            Thread.Sleep(1000);
-            
-            Run();
-        }
-        else
-        {
-            loadData!.Load();
-            GameManager.Instance.Init();
-            Town.Instance.Run();
-        }
+        bool successLoad = SaveStage.Instance.TryLoad();
+
+        if (successLoad) return;
+        
+        string message = "[System] 타이틀 화면으로 돌아갑니다.";
+        Util.PrintColorMessage(Util.system, message);
+        Thread.Sleep(1000);
+        Run();
     }
     
     private void Exit()

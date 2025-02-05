@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using TextRPG.Data;
-using TextRPG.Manager;
+﻿using TextRPG.Manager;
 using TextRPG.Stage;
 using TextRPG.Utils;
 
@@ -13,6 +10,7 @@ public class Program
     {
         GameManager.Instance.OnGameInit += CsvToJsonConverter.ConvertAllCsvInFolder;
         GameManager.Instance.OnGameInit += DataManager.Instance.Init;
+        GameManager.Instance.OnGameInit += SaveStage.Instance.Init;
         GameManager.Instance.OnGameInit += Town.Instance.Init;
         GameManager.Instance.OnGameInit += Shop.Instance.Init;
         GameManager.Instance.OnGameInit += Dungeon.Instance.Init;

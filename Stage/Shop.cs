@@ -7,10 +7,11 @@ namespace TextRPG.Stage;
 
 public class Shop : Singleton<Shop>
 {
-    public Dictionary<int, bool> Purchased { get; set; } = new();
-    private readonly List<Equipment> equipments = new();
-    private readonly StringBuilder shopSb = new();
-    private readonly StringBuilder itemSb = new();
+    public Dictionary<int, bool> Purchased { get; } = new();
+    
+    private List<Equipment> equipments = new();
+    private StringBuilder shopSb = new();
+    private StringBuilder itemSb = new();
 
     public override void Init()
     {

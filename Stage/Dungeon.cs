@@ -10,8 +10,8 @@ public class Dungeon : Singleton<Dungeon>
     private StringBuilder dungeonSb = new();
     private StringBuilder playSb = new();
     private StringBuilder battleSb = new();
-    private const int MinHpLoss = 25;
-    private const int MaxHpLoss = 35;
+    private const int MinHpLoss = 20;
+    private const int MaxHpLoss = 30;
     private const int printDelay = 300;
 
     private DungeonData EasyDungeon = new(DungeonLevel.Easy, 0.1f, 8, 1000, 100);
@@ -38,6 +38,8 @@ public class Dungeon : Singleton<Dungeon>
     {
         Console.Clear();
         string message = "[System] 던전에 입장합니다.";
+        Util.PrintColorMessage(Util.system, message);
+        message = $"[System] 현재 방어력 : {player.GetTotalStats().Defense} G";
         Util.PrintColorMessage(Util.system, message);
 
         Console.Write(dungeonSb.ToString());
@@ -116,7 +118,7 @@ public class Dungeon : Singleton<Dungeon>
         int lossHp = rand.Next(minHpLoss, maxHpLoss + 1);
 
         battleSb.Clear();
-        Util.PrintColorMessage(Util.system, $"[System] {monster.Name}을(를) 만났습니다.");
+        Util.PrintColorMessage(Util.system, $"[System] Lv.{monster.Level} {monster.Name}을(를) 만났습니다.");
         Thread.Sleep(printDelay);
         Util.PrintColorMessage(Util.system, $"[System] {monster.Name} 공격력 : {monster.Attack}");
         Thread.Sleep(printDelay);
@@ -157,7 +159,8 @@ public class Dungeon : Singleton<Dungeon>
 
     private void CheckClearDungeon(DungeonData dungeonData)
     {
-        bool EnoughDefense = player.Stats.Defense >= dungeonData.RecommendedDefense;
+        var playerStats = player.GetTotalStats();
+        bool EnoughDefense = playerStats.Defense >= dungeonData.RecommendedDefense;
         int clearRate = EnoughDefense ? 100 : 60;
         var rand = new Random();
 
@@ -169,10 +172,10 @@ public class Dungeon : Singleton<Dungeon>
             Thread.Sleep(printDelay);
             Util.PrintColorMessage(Util.success, $"[System] 보상으로 {dungeonData.RewardExp} 경험치를 획득했습니다.");
             Thread.Sleep(printDelay);
-            SpecialReward();
 
             player.Gold += dungeonData.RewardGold;
             player.Exp += dungeonData.RewardExp;
+            SpecialReward();
         }
         else
         {
@@ -188,7 +191,7 @@ public class Dungeon : Singleton<Dungeon>
         void SpecialReward()
         {
             int specialRate = 50;
-            specialRate += player.Stats.Attack * 2;
+            specialRate += playerStats.Attack * 2;
 
             if (rand.Next(0, 101) > specialRate) return;
             

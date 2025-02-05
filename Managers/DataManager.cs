@@ -9,16 +9,16 @@ public class DataManager : Singleton<DataManager>
     public MonsterDatas MonsterDatas { get; } = new();
     public EquipmentDatas EquipmentDatas { get; } = new();
     public ConsumeItemDatas ConsumeItemDatas { get; } = new();
-    private const string folerPath = "Data/JSON";
+    private const string FolderPath = "Data/JSON";
+    private const string SavePath = "Data/SAVE";
     
     public override void Init()
     {
-        MonsterDatas.LoadData(folerPath);
-        EquipmentDatas.LoadData(folerPath);
-        ConsumeItemDatas.LoadData(folerPath);
+        MonsterDatas.LoadData(FolderPath);
+        EquipmentDatas.LoadData(FolderPath);
+        ConsumeItemDatas.LoadData(FolderPath);
     }
 
-    // 9000 번대 아이템은 특수 아이템으로 판단
     public List<Equipment> GetBuyEquipments()
     {
         List<Equipment> buyEquipments = new();
@@ -73,20 +73,20 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    public void SaveData()
+    public void SaveData(int slot)
     {
         var player = GameManager.Instance.Player;
         SaveData save = new(player.Name, player.Level, player.Exp, player.Gold, player.CurrentHp);
         save.Save();
         
         string json = JsonConvert.SerializeObject(save);
-        string filePath = Path.Combine(folerPath, "SaveData.json");
+        string filePath = Path.Combine(SavePath, $"SaveData_0{slot}.json");
         File.WriteAllText(filePath, json);
     }
     
-    public SaveData? LoadData()
+    public SaveData? LoadData(int slot)
     {
-        string filePath = Path.Combine(folerPath, "SaveData.json");
+        string filePath = Path.Combine(SavePath, $"SaveData_0{slot}.json");
         if (!File.Exists(filePath))
         {
             return null;
@@ -94,5 +94,20 @@ public class DataManager : Singleton<DataManager>
 
         string json = File.ReadAllText(filePath);
         return JsonConvert.DeserializeObject<SaveData>(json);
+    }
+    
+    public List<string> GetSaveFiles()
+    {
+        string[] files = Directory.GetFiles(SavePath);
+        List<string> saveFiles = new();
+        foreach (var file in files)
+        {
+            if (file.Contains("SaveData_0"))
+            {
+                saveFiles.Add(file);
+            }
+        }
+
+        return saveFiles;
     }
 }

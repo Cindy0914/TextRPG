@@ -1,8 +1,4 @@
-using CsvHelper.Configuration.Attributes;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using TextRPG.Manager;
-using TextRPG.Utils;
 
 namespace TextRPG.Data;
 
@@ -43,13 +39,13 @@ public class Equipment
 {
     public EquipmentSlot Slot;
     public StatType Stat;
-    public string Name = string.Empty;
-    public string Desc = string.Empty;
-    public int Id = -1;
-    public int Value = 0;
-    public int Price = 0;
+    public string Name;
+    public string Desc;
+    public int Id;
+    public int Value;
+    public int Price;
+    public bool IsEquipped;
 
-    public bool IsEquipped = false;
     public int SellPrice => Price / 2;
     
     public void Equip(CharacterStats enhancedStats)
