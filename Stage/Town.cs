@@ -4,9 +4,10 @@ using TextRPG.Utils;
 
 namespace TextRPG.Stage;
 
+// 타운 스테이지는 주로 다른 스테이지로 이동하기 위한 기능밖에 없음
 public class Town : Singleton<Town>
 {
-    private readonly StringBuilder townSb = new();
+    private StringBuilder townSb = new();
 
     public override void Init()
     {
@@ -32,7 +33,6 @@ public class Town : Singleton<Town>
     {
         Console.Clear();
         Console.Write(townSb.ToString());
-        
         
         int input = Util.GetUserInput(6);
         TitleAction((TitleActionEnum)input);
@@ -112,7 +112,7 @@ public class Town : Singleton<Town>
     
     private void Exit()
     {
-        Environment.Exit(0);
+        Program.Exit();
     }
 }
 

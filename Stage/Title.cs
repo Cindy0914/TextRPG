@@ -42,6 +42,7 @@ public class Title : Singleton<Title>
         }
     }
     
+    // 게임을 시작하기 위한 GameManager의 초기화 (SetCharacter와 Init이 필요)
     private void NewGame()
     {
         Warrior player = SetCharacter();
@@ -52,6 +53,7 @@ public class Title : Singleton<Title>
         Town.Instance.Run();
     }
     
+    // 이어하기 시 TryLoad 함수 내에서 GameManager의 SetCharacter와 Init 호출함 
     private void Continue()
     {
         bool successLoad = SaveStage.Instance.TryLoad();
@@ -66,9 +68,10 @@ public class Title : Singleton<Title>
     
     private void Exit()
     {
-        Environment.Exit(0);
+        Program.Exit();
     }
     
+    // 새로 시작할 시 이름을 입력받아 Warrior 객체 생성
     private Warrior SetCharacter()
     {
         Console.Clear();

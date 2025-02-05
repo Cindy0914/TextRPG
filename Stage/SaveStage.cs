@@ -4,6 +4,7 @@ using TextRPG.Utils;
 
 namespace TextRPG.Stage;
 
+// 저장과 불러오기를 담당하는 스테이지
 public class SaveStage : Singleton<SaveStage>
 {
     private StringBuilder saveSb = new();
@@ -47,6 +48,7 @@ public class SaveStage : Singleton<SaveStage>
         }
     }
 
+    // 저장되어 있는 데이터들을 기준으로 마지막 슬롯에 저장
     private void Save()
     {
         var saveFiles = DataManager.Instance.GetSaveFiles();
@@ -63,6 +65,7 @@ public class SaveStage : Singleton<SaveStage>
         Town.Instance.Run();
     }
 
+    // 저장되어 있는 데이터들을 보여주고 슬롯을 선택하여 덮어씌움
     private void OverWrite()
     {
         var saveFiles = DataManager.Instance.GetSaveFiles();
@@ -98,6 +101,7 @@ public class SaveStage : Singleton<SaveStage>
         Town.Instance.Run();
     }
 
+    // 로드 실패 시 함수를 불러낸 곳에서 스테이지 변경을 조절하기 위해 bool값을 반환
     public bool TryLoad()
     {
         var saveFiles = DataManager.Instance.GetSaveFiles();
@@ -131,6 +135,7 @@ public class SaveStage : Singleton<SaveStage>
         return true;
     }
 
+    // 현재 저장된 데이터들을 보여줌
     private void ShowSaveFiles(List<string> saveFiles)
     {
         saveFilesSb.Clear();

@@ -10,6 +10,7 @@ public static class Util
     public const ConsoleColor success = ConsoleColor.Green;
     public const ConsoleColor system = ConsoleColor.Cyan;
     
+    // 선택지의 개수를 매개변수로 받아 사용자 입력을 받는 메서드
     public static int GetUserInput(int max)
     {
         Console.Write(newInput);
@@ -54,6 +55,7 @@ public static class Util
         Console.SetCursorPosition(newInput.Length, top);
     }
 
+    // 색상과 함께 메시지를 출력하는 메서드
     public static void PrintColorMessage(ConsoleColor color, string message, bool isLineBreak = true, bool isInputError = false)
     {
         if (isInputError)

@@ -3,6 +3,7 @@ using TextRPG.Stage;
 
 namespace TextRPG.Data;
 
+// 데이터를 저장하고 불러올 때 생성하는 클래스
 public class SaveData
 {
     public string Name { get; }
@@ -11,6 +12,8 @@ public class SaveData
     private int Exp;
     private int Gold;
     private int CurrentHp;
+    
+    // DataManager가 데이터들을 가지고 있기 때문에 Id만 저장
     private int[]? Equipped;
     private int[]? Equipments;
     private int[]? Items;
@@ -26,9 +29,9 @@ public class SaveData
 
     public void Save()
     {
-        SaveEquipments();
-        SaveItems();
-        SaveEquipped();
+        SaveEquipments(); // 현재 가진 장비 저장
+        SaveItems();      // 현재 가진 소모품 저장
+        SaveEquipped();   // 현재 장착중인 장비 저장
     }
     
     public void Load()
@@ -36,6 +39,7 @@ public class SaveData
         Warrior warrior = new(Name, new CharacterStats(100, 10, 5));
         GameManager.Instance.SetPlayer(warrior);
         
+        // 레벨업을 위해 레벨만큼 레벨업
         if (Level > 1)
         {
             for (int i = 1; i < Level; i++)
@@ -108,6 +112,8 @@ public class SaveData
         {
             var equipment = DataManager.Instance.EquipmentDatas.Dict![Equipments[i]];
             GameManager.Instance.Inventory.AddEquipment(equipment);
+            
+            // 플레이어가 구매한 장비라면 Shop에서 매진 처리
             Shop.Instance.Purchased.Remove(equipment.Id);
             Shop.Instance.Purchased.Add(equipment.Id, true);
         }

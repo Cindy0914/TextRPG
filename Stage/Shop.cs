@@ -7,6 +7,7 @@ namespace TextRPG.Stage;
 
 public class Shop : Singleton<Shop>
 {
+    // 장비의 Id를 Key값으로 구매 여부를 저장하는 Dictionary
     public Dictionary<int, bool> Purchased { get; } = new();
     
     private List<Equipment> equipments = new();
@@ -24,6 +25,7 @@ public class Shop : Singleton<Shop>
         shopSb.AppendLine();
         shopSb.AppendLine("어떤 행동을 하시겠습니까?");
         
+        // 초기화 시 구매 가능한 장비 목록을 가져옴
         var buyEquipments = DataManager.Instance.GetBuyEquipments();
         equipments.AddRange(buyEquipments);
         foreach (var equip in buyEquipments)
@@ -101,6 +103,7 @@ public class Shop : Singleton<Shop>
 
         return;
 
+        // 구매 완료(sold out) 을 출력하기 위한 메서드
         void PrintIsPurchased(int index, bool isPurchased, Equipment equip)
         {
             string message = " [Sold Out]";
@@ -195,6 +198,7 @@ public class Shop : Singleton<Shop>
             GameManager.Instance.Player!.UpEquipItem(equip);
         }
         
+        // 아이템을 판매하면 다시 상점에서 구매할 수 있도록 구매 여부를 false로 변경
         Purchased.Remove(equip.Id);
         Purchased.Add(equip.Id, false);
     }

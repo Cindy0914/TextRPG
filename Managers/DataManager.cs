@@ -4,6 +4,7 @@ using TextRPG.Stage;
 
 namespace TextRPG.Manager;
 
+// Json 파일을 읽어오는 클래스들을 관리하고 저장하는 클래스
 public class DataManager : Singleton<DataManager>
 {
     public MonsterDatas MonsterDatas { get; } = new();

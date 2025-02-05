@@ -68,6 +68,7 @@ public class Dungeon : Singleton<Dungeon>
         }
     }
 
+    // 던전 입장 시 호출되는 메서드(난이도에 따라 해당 던전 데이터를 전달)
     private void PlayDungeon(DungeonData dungeonData)
     {
         Console.Clear();
@@ -104,9 +105,11 @@ public class Dungeon : Singleton<Dungeon>
         playSb.AppendLine("[System] 던전을 빠져나갑니다.");
         PrintLineByLine(playSb);
 
+        // 게임 오버가 아닌 경우 클리어 여부 확인
         CheckClearDungeon(dungeonData);
     }
 
+    // 던전 진행 중 몬스터와 전투하는 메서드
     private void Battle(DungeonLevel level, float lossGoldRate)
     {
         var monster = DataManager.Instance.GetMonsterData(level);
@@ -129,7 +132,7 @@ public class Dungeon : Singleton<Dungeon>
         battleSb.AppendLine("[System] 전투 종료!");
         PrintLineByLine(battleSb);
 
-        player.TakeDamage(lossHp);
+        player.TakeDamage(lossHp); // 플레이어가 몬스터에게 받은 데미지만큼 체력 감소
         Util.PrintColorMessage(Util.error, $"[System] 전투 도중 체력 {lossHp}을(를) 잃었습니다.");
         Thread.Sleep(printDelay);
         Util.PrintColorMessage(Util.system, $"[System] 남은 체력 : {player.CurrentHp} / {playerStats.MaxHp}");
@@ -137,10 +140,12 @@ public class Dungeon : Singleton<Dungeon>
 
         if (player.IsDead)
         {
+            // 플레이어가 사망한 경우 게임 오버
             GameOverInDungeon(lossGoldRate);
         }
     }
 
+    // 게임 오버 패널티를 받으며 마을로 돌아감
     private void GameOverInDungeon(float lossGoldRate)
     {
         int lossGold = (int)(player.Gold * lossGoldRate);
@@ -157,11 +162,12 @@ public class Dungeon : Singleton<Dungeon>
         ReturnToTitle();
     }
 
+    // 던전 클리어 여부를 확인하고 보상과 특별보상 지급
     private void CheckClearDungeon(DungeonData dungeonData)
     {
         var playerStats = player.GetTotalStats();
         bool EnoughDefense = playerStats.Defense >= dungeonData.RecommendedDefense;
-        int clearRate = EnoughDefense ? 100 : 60;
+        int clearRate = EnoughDefense ? 100 : 60; // 권장 방어력 이상일 경우 100% 클리어 확률, 미만일 경우 60% 클리어 확률
         var rand = new Random();
 
         if (rand.Next(0, 101) <= clearRate)
@@ -190,6 +196,7 @@ public class Dungeon : Singleton<Dungeon>
 
         void SpecialReward()
         {
+            // 특별 보상을 받을 확률은 기본 50% + 공격력 * 2
             int specialRate = 50;
             specialRate += playerStats.Attack * 2;
 
@@ -208,6 +215,7 @@ public class Dungeon : Singleton<Dungeon>
         }
     }
 
+    // 던전에서 출력되는 메시지를 한 줄씩 출력
     private void PrintLineByLine(StringBuilder sb)
     {
         foreach (string line in sb.ToString().Split('\n'))
@@ -233,6 +241,7 @@ public enum DungeonLevel
     Hard
 }
 
+// 던전을 구성하기 위한 데이터 클래스
 public class DungeonData
 {
     public DungeonLevel Level;

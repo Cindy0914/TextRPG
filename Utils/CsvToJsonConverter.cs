@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 
 namespace TextRPG.Utils;
 
+// CSV 파일을 Json 파일로 변환하는 유틸리티 클래스
 public static class CsvToJsonConverter
 {
     private const string folderPath = "Data/CSV";

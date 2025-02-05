@@ -59,6 +59,7 @@ public class Inventory
         string message = "[System] 아이템을 사용합니다.";
         string hpMessage = $"[System] 현재 HP : {player.CurrentHp} / {player.Stats.MaxHp}";
 
+        // 아이템을 계속해서 사용할 수 있도록 무한 루프
         while (true)
         {
             hpMessage = $"[System] 현재 HP : {player.CurrentHp} / {player.Stats.MaxHp}";

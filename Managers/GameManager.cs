@@ -6,6 +6,7 @@ namespace TextRPG.Manager;
 
 public class GameManager : Singleton<GameManager>
 {
+    // 게임 시작 전 싱글턴 초기화 이벤트
     public event Action? OnGameInit;
     
     public Warrior? Player { get; private set; }
